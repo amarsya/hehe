@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ucapan Ulang Tahun</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Roboto+Slab:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            width: 100vw;
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, #4A6DA7, #6B8EAF);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: transparent;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 5vw;
+            width: 100%;
+            max-width: 1200px;
+            padding: 0 20px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .gift-box {
+            width: 25vw;
+            max-width: 300px;
+            height: 25vw;
+            max-height: 300px;
+            background-color: transparent;
+            perspective: 1000px;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .gift-box-inner {
+            width: 100%;
+            height: 100%;
+            transition: transform 0.8s;
+            transform-style: preserve-3d;
+            position: relative;
+        }
+
+        .gift-box:hover .gift-box-inner {
+            transform: rotateY(180deg);
+        }
+
+        .gift-box-front, .gift-box-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+
+        .gift-box-front {
+            background: linear-gradient(145deg, #2C4D7A, #3E6190);
+            transform: rotateY(0deg);
+        }
+
+        .gift-box-back {
+            background: linear-gradient(145deg, #3E6190, #2C4D7A);
+            transform: rotateY(180deg);
+            display: flex;
+            flex-direction: column;
+            padding: 30px;
+            color: white;
+            text-align: center;
+            font-family: 'Roboto Slab', serif;
+        }
+
+        .gift-box-front::before {
+            content: '🎁';
+            font-size: 150px;
+        }
+
+        .page {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(135deg, #4A6DA7, #6B8EAF);
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .paper {
+            background-color: white;
+            width: 90%;
+            max-width: 900px;
+            padding: 50px;
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+            text-align: center;
+            animation: unfold 1s ease;
+        }
+
+        @keyframes unfold {
+            from {
+                transform: scale(0.5) rotateX(-90deg);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1) rotateX(0);
+                opacity: 1;
+            }
+        }
+
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: #2C4D7A;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+        }
+
+        .first-page {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(135deg, #4A6DA7, #6B8EAF);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            z-index: 100;
+        }
+
+        .first-page-content {
+            background-color: white;
+            padding: 50px;
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+            text-align: center;
+            width: 80%;
+            max-width: 600px;
+        }
+
+        h1, h2 {
+            font-family: 'Roboto Slab', serif;
+            font-weight: 700;
+        }
+
+        p, ul {
+            font-family: 'Montserrat', sans-serif;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .gift-box {
+                width: 60vw;
+                height: 60vw;
+                max-width: 250px;
+                max-height: 250px;
+            }
+
+            .gift-box-front::before {
+                font-size: 100px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="first-page" id="firstPage">
+        <div class="first-page-content">
+            <h1 style="color: #2C4D7A; font-size: 2.5em;">Selamat Ulang Tahun Dodi Suta Faturohman!</h1>
+            <p style="font-size: 1.7em;">Barakallah Fii Umrik yaa, Yahahaha makin tua</p>
+            <button onclick="startCelebration()" style="
+                margin-top: 20px;
+                background-color: #2C4D7A;
+                color: white;
+                border: none;
+                padding: 15px 30px;
+                border-radius: 12px;
+                cursor: pointer;
+                font-family: 'Montserrat', sans-serif;
+                font-size: 1.1em;
+                font-weight: 600;
+            ">Pencet</button>
+        </div>
+    </div>
+
+    <div class="container" id="mainPage" style="display:none;">
+        <div class="gift-box" onclick="openPage('greeting')">
+            <div class="gift-box-inner">
+                <div class="gift-box-front"></div>
+                <div class="gift-box-back">
+                    <h3>Apa ya</h3>
+                    <p>Coba buka</p>
+                </div>
+            </div>
+        </div>
+        <div class="gift-box" onclick="openPage('wishes')">
+            <div class="gift-box-inner">
+                <div class="gift-box-front"></div>
+                <div class="gift-box-back">
+                    <h3>Kata-kata</h3>
+                    <p>Buka Ajah</p>
+                </div>
+            </div>
+        </div>
+        <div class="gift-box" onclick="openPage('empty')">
+            <div class="gift-box-inner">
+                <div class="gift-box-front"></div>
+                <div class="gift-box-back">
+                    <h3>SANGAT SPESIAL</h3>
+                    <p>BUKAA</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="greetingPage" class="page">
+        <button class="back-btn" onclick="goBack()">Kembali</button>
+        <div class="paper">
+            <h1 style="color: #2C4D7A; font-family: 'Roboto Slab', cursive;">Selamat Ulang Tahun!</h1>
+            <p>Anjayyy, akhirnya anda resmi jadi orang dewasa! 🎉 Selamat ulang tahun ke-18, bro! Sekarang anda udah masuk level baru dalam hidup, Welcome to adulthood, di mana tanggung jawab makin numpuk tapi tetep bisa seru-seruan! Semoga rejeki makin lancar, panjang umur, mimpi-mimpi mu makin dekat, sehat selalu, tetap jadi orang baik 😁. Jangan lupa, tetap nikmatin perjalanan hidup dengan cara mu sendiri. Oh iya, traktiran minimal mie ayam sama es teh manis lah, atau kalau nggak, THR aja nanti! 😜🔥</p>
+        </div>
+    </div>
+
+    <div id="wishesPage" class="page">
+        <button class="back-btn" onclick="goBack()">Kembali</button>
+        <div class="paper">
+            <h2 style="color: #2C4D7A;">Kata - kata hari ini</h2>
+            <p>Hari ini bukan cuma soal bertambahnya usia, tapi juga langkah awal kamu melangkah ke dunia baru yang penuh tantangan dan kebahagiaan. Semoga setiap keinginan yang kamu panjatkan, baik itu besar maupun kecil, bisa terwujud. Jangan takut untuk bermimpi dan berani mengambil risiko, karena kamu punya potensi yang luar biasa. Terus jadi diri sendiri, penuh semangat, dan selalu ingat bahwa aku dan teman-teman selalu ada buat kamu. Selamat menikmati hari istimewa ini, buat momen-momen yang gak terlupakan, dan semoga semua perjalananmu ke depan selalu lancar. Tetap semangat, kurangin nanti begadangnya, jaga kesehatanmu, dan jangan lupa untuk selalu bersyukur atas apa yang kamu miliki. Cheers to your awesome journey into adulthood, bro!</p>
+        </div>
+    </div>
+
+    <div id="emptyPage" class="page">
+        <button class="back-btn" onclick="goBack()">Kembali</button>
+        <div class="paper">
+            <h2>Kado Sangat Sangat Spesial!</h2>
+            <p>Semoga bisa membuat harimau lebih bahagia! HBD LG Y :|</p>
+            <div class="media-container" style="display: flex; flex-direction: row; align-items: center; justify-content: center; gap: 20px;">
+                <video controls style="max-width: 400px; width: 100%;">
+                    <source src="images/hbd.mp4" type="video/mp4">
+                    Browser Anda tidak mendukung pemutar video.
+                </video>
+                <img src="images/wm.jpg" alt="Gambar Hadiah" style="max-width: 400px; width: 100%;">
+            </div>
+        </div>
+    </div>
+    
+    
+
+    <script>
+        function createConfetti() {
+            const colors = ['#2C4D7A', '#4A6DA7', '#6B8EAF', '#FFFFFF', '#708090'];
+            for (let i = 0; i < 100; i++) {
+                const confetti = document.createElement('div');
+                confetti.classList.add('confetti');
+                confetti.style.left = Math.random() * window.innerWidth + 'px';
+                confetti.style.top = Math.random() * window.innerHeight + 'px';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.animation = `fall ${5 + Math.random() * 5}s linear ${Math.random() * 5}s infinite`;
+                document.body.appendChild(confetti);
+            }
+        }
+
+        function animateConfetti() {
+            const style = document.createElement('style');
+            style.innerHTML = `
+                @keyframes fall {
+                    to {
+                        transform: translateY(100vh) rotate(360deg);
+                        opacity: 0;
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+            createConfetti();
+        }
+
+        function startCelebration() {
+            const firstPage = document.getElementById('firstPage');
+            const mainPage = document.getElementById('mainPage');
+            
+            firstPage.style.display = 'none';
+            mainPage.style.display = 'flex';
+            
+            animateConfetti();
+        }
+
+        function openPage(pageId) {
+            document.getElementById('mainPage').style.display = 'none';
+            document.getElementById(pageId + 'Page').style.display = 'flex';
+        }
+
+        function goBack() {
+            document.getElementById('mainPage').style.display = 'flex';
+            document.getElementById('greetingPage').style.display = 'none';
+            document.getElementById('wishesPage').style.display = 'none';
+            document.getElementById('emptyPage').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
